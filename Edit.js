@@ -4,11 +4,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Edit = ({ navigation, route }) => {
     const mydata = JSON.parse(route.params.datastring);
-    const { index, type, pokemon, num, own, imageUrl } = route.params;
+    const { index, type, pokemon, ISBN, copies, imageUrl } = route.params;
 
     const [bookName, setBookName] = useState(pokemon);
-    const [isbn, setIsbn] = useState(num);
-    const [copies, setCopies] = useState(own);
+    const [isbn, setIsbn] = useState(ISBN);
+    const [copiesOwned, setCopiesOwned] = useState(copies);
     const [imgUrl, setImgUrl] = useState(imageUrl);
 
     const saveData = async (newData) => {
@@ -23,7 +23,7 @@ const Edit = ({ navigation, route }) => {
             <Text>ISBN:</Text>
             <TextInput style={{ borderWidth: 1 }} onChangeText={setIsbn} value={isbn} />
             <Text>Copies Owned:</Text>
-            <TextInput style={{ borderWidth: 1 }} onChangeText={setCopies} value={copies} />
+            <TextInput style={{ borderWidth: 1 }} onChangeText={setCopiesOwned} value={copiesOwned} />
             <Text>Image URL:</Text>
             <TextInput style={{ borderWidth: 1 }} onChangeText={setImgUrl} value={imgUrl} />
             <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
@@ -31,7 +31,12 @@ const Edit = ({ navigation, route }) => {
                     title="Save"
                     onPress={() => {
                         const sectionIndex = type === "Fantasy" ? 1 : 0;
-                        mydata[sectionIndex].data[index] = { key: bookName, ISBN: isbn, copies, imageUrl: imgUrl };
+                        mydata[sectionIndex].data[index] = {
+                            key: bookName,
+                            ISBN: isbn,
+                            copies: copiesOwned,
+                            imageUrl: imgUrl,
+                        };
                         saveData(mydata);
                     }}
                 />
